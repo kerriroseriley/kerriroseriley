@@ -25,9 +25,10 @@
     }
 
     .buttons {
-      position: relative;
-      width: 280px;
-      height: 180px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
     }
 
     button {
@@ -43,68 +44,67 @@
       color: white;
     }
 
+    /* IMPORTANT: No positioning here so it starts next to Yes */
     #no {
       background-color: #555;
       color: white;
-      position: absolute;
-      left: 150px;
-      top: 80px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Will You Be My Valentine?</h1>
+  <h1>Will You Be My Valentine? ❤️</h1>
 
   <div class="buttons">
-    <button id="yes" onclick="alert('YAY 💖 Best Valentine ever!')">
+    <button id="yes" type="button">
       Yes
     </button>
 
-    <button id="no">
+    <button id="no" type="button">
       No
     </button>
   </div>
 
+  <script>
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
 
-<script>
-  const noButton = document.getElementById("no");
-  let escaped = false;
+    let escaped = false;
 
-  function moveButton() {
-    if (!escaped) {
-      const rect = noButton.getBoundingClientRect();
+    yesButton.addEventListener("click", () => {
+      alert("YAY 💖 Best Valentine ever!");
+    });
 
-      // lock current position before freeing it
-      noButton.style.position = "fixed";
-      noButton.style.left = `${rect.left}px`;
-      noButton.style.top = `${rect.top}px`;
+    function moveButton() {
+      // First interaction: freeze where it is, then escape layout
+      if (!escaped) {
+        const rect = noButton.getBoundingClientRect();
+        noButton.style.position = "fixed";
+        noButton.style.left = rect.left + "px";
+        noButton.style.top = rect.top + "px";
+        escaped = true;
+      }
 
-      escaped = true;
+      const padding = 20;
+      const maxX = window.innerWidth - noButton.offsetWidth - padding;
+      const maxY = window.innerHeight - noButton.offsetHeight - padding;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noButton.style.left = x + "px";
+      noButton.style.top = y + "px";
     }
 
-    const padding = 20;
-    const maxX = window.innerWidth - noButton.offsetWidth - padding;
-    const maxY = window.innerHeight - noButton.offsetHeight - padding;
+    // Desktop
+    noButton.addEventListener("mouseover", moveButton);
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    noButton.style.left = `${x}px`;
-    noButton.style.top = `${y}px`;
-  }
-
-  // Desktop
-  noButton.addEventListener("mouseover", moveButton);
-
-  // Mobile
-  noButton.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    moveButton();
-  });
-</script>
-
+    // Mobile
+    noButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveButton();
+    }, { passive: false });
+  </script>
 
 </body>
 </html>
-
