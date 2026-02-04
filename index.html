@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     body {
       height: 100vh;
@@ -13,24 +15,26 @@
       align-items: center;
       font-family: Arial, sans-serif;
       background: pink;
+      overflow: hidden;
     }
 
     h1 {
       margin-bottom: 30px;
+      text-align: center;
     }
 
     .buttons {
       position: relative;
-      width: 300px;
-      height: 150px;
+      width: 280px;
+      height: 180px;
     }
 
     button {
-      padding: 12px 24px;
-      font-size: 16px;
-      cursor: pointer;
+      padding: 14px 26px;
+      font-size: 18px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
     #yes {
@@ -42,8 +46,8 @@
       background-color: #555;
       color: white;
       position: absolute;
-      left: 180px;
-      top: 0;
+      left: 150px;
+      top: 80px;
     }
   </style>
 </head>
@@ -63,13 +67,26 @@
 
   <script>
     const noButton = document.getElementById("no");
+    const container = document.querySelector(".buttons");
 
-    noButton.addEventListener("mouseover", () => {
-      const x = Math.random() * 200;
-      const y = Math.random() * 100;
+    function moveButton() {
+      const maxX = container.clientWidth - noButton.offsetWidth;
+      const maxY = container.clientHeight - noButton.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
       noButton.style.left = `${x}px`;
       noButton.style.top = `${y}px`;
+    }
+
+    // Desktop
+    noButton.addEventListener("mouseover", moveButton);
+
+    // Mobile
+    noButton.addEventListener("touchstart", (e) => {
+      e.preventDefault(); // stops accidental click
+      moveButton();
     });
   </script>
 
