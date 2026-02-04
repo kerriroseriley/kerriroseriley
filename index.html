@@ -1,14 +1,77 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css"> <!-- Link to CSS file -->
+  <meta charset="UTF-8" />
+  <title>Valentine?</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: pink;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      position: relative;
+      width: 300px;
+      height: 150px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+    }
+
+    #yes {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #no {
+      background-color: #555;
+      color: white;
+      position: absolute;
+      left: 180px;
+      top: 0;
+    }
+  </style>
 </head>
 <body>
-    <h1>Will You Be My Valentine?</h1>
-    <p></p>
-    <script src="scripts.js"></script> <!-- Link to JavaScript file -->
+
+  <h1>Will You Be My Valentine? ❤️</h1>
+
+  <div class="buttons">
+    <button id="yes" onclick="alert('YAY 💖 Best Valentine ever!')">
+      Yes
+    </button>
+
+    <button id="no">
+      No
+    </button>
+  </div>
+
+  <script>
+    const noButton = document.getElementById("no");
+
+    noButton.addEventListener("mouseover", () => {
+      const x = Math.random() * 200;
+      const y = Math.random() * 100;
+
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    });
+  </script>
+
 </body>
 </html>
