@@ -21,7 +21,7 @@
     h1 {
       margin-bottom: 30px;
       text-align: center;
-      font-size: 50px
+      font-size: 48px;
     }
 
     .buttons {
@@ -54,7 +54,7 @@
 </head>
 <body>
 
-  <h1>Will You Be My Valentine? ❤️</h1>
+  <h1>Will You Be My Valentine?</h1>
 
   <div class="buttons">
     <button id="yes" onclick="alert('YAY 💖 Best Valentine ever!')">
@@ -66,31 +66,30 @@
     </button>
   </div>
 
-<script>
-  const noButton = document.getElementById("no");
+  <script>
+    const noButton = document.getElementById("no");
+    const container = document.querySelector(".buttons");
 
-  function moveButton() {
-    const padding = 20; // keeps it from going off-screen
+    function moveButton() {
+      const maxX = container.clientWidth - noButton.offsetWidth;
+      const maxY = container.clientHeight - noButton.offsetHeight;
 
-    const maxX = window.innerWidth - noButton.offsetWidth - padding;
-    const maxY = window.innerHeight - noButton.offsetHeight - padding;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+    }
 
-    noButton.style.left = `${x}px`;
-    noButton.style.top = `${y}px`;
-  }
+    // Desktop
+    noButton.addEventListener("mouseover", moveButton);
 
-  // Desktop
-  noButton.addEventListener("mouseover", moveButton);
-
-  // Mobile
-  noButton.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    moveButton();
-  });
-</script>
+    // Mobile
+    noButton.addEventListener("touchstart", (e) => {
+      e.preventDefault(); // stops accidental click
+      moveButton();
+    });
+  </script>
 
 </body>
 </html>
