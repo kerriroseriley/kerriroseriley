@@ -66,30 +66,31 @@
     </button>
   </div>
 
-  <script>
-    const noButton = document.getElementById("no");
-    const container = document.querySelector(".buttons");
+<script>
+  const noButton = document.getElementById("no");
 
-    function moveButton() {
-      const maxX = container.clientWidth - noButton.offsetWidth;
-      const maxY = container.clientHeight - noButton.offsetHeight;
+  function moveButton() {
+    const padding = 20; // keeps it from going off-screen
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+    const maxX = window.innerWidth - noButton.offsetWidth - padding;
+    const maxY = window.innerHeight - noButton.offsetHeight - padding;
 
-      noButton.style.left = `${x}px`;
-      noButton.style.top = `${y}px`;
-    }
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
 
-    // Desktop
-    noButton.addEventListener("mouseover", moveButton);
+    noButton.style.left = `${x}px`;
+    noButton.style.top = `${y}px`;
+  }
 
-    // Mobile
-    noButton.addEventListener("touchstart", (e) => {
-      e.preventDefault(); // stops accidental click
-      moveButton();
-    });
-  </script>
+  // Desktop
+  noButton.addEventListener("mouseover", moveButton);
+
+  // Mobile
+  noButton.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveButton();
+  });
+</script>
 
 </body>
 </html>
