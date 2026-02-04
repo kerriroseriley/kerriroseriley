@@ -66,30 +66,45 @@
     </button>
   </div>
 
-  <script>
-    const noButton = document.getElementById("no");
-    const container = document.querySelector(".buttons");
 
-    function moveButton() {
-      const maxX = container.clientWidth - noButton.offsetWidth;
-      const maxY = container.clientHeight - noButton.offsetHeight;
+<script>
+  const noButton = document.getElementById("no");
+  let escaped = false;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+  function moveButton() {
+    if (!escaped) {
+      const rect = noButton.getBoundingClientRect();
 
-      noButton.style.left = `${x}px`;
-      noButton.style.top = `${y}px`;
+      // lock current position before freeing it
+      noButton.style.position = "fixed";
+      noButton.style.left = `${rect.left}px`;
+      noButton.style.top = `${rect.top}px`;
+
+      escaped = true;
     }
 
-    // Desktop
-    noButton.addEventListener("mouseover", moveButton);
+    const padding = 20;
+    const maxX = window.innerWidth - noButton.offsetWidth - padding;
+    const maxY = window.innerHeight - noButton.offsetHeight - padding;
 
-    // Mobile
-    noButton.addEventListener("touchstart", (e) => {
-      e.preventDefault(); // stops accidental click
-      moveButton();
-    });
-  </script>
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noButton.style.left = `${x}px`;
+    noButton.style.top = `${y}px`;
+  }
+
+  // Desktop
+  noButton.addEventListener("mouseover", moveButton);
+
+  // Mobile
+  noButton.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveButton();
+  });
+</script>
+
 
 </body>
 </html>
+
