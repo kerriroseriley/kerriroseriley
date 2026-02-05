@@ -66,45 +66,49 @@
   </div>
 
   <script>
-    const yesButton = document.getElementById("yes");
-    const noButton = document.getElementById("no");
+  const yesButton = document.getElementById("yes");
+  const noButton = document.getElementById("no");
 
-    let escaped = false;
+  let escaped = false;
 
-    yesButton.addEventListener("click", () => {
-      alert("YAY 💖 Best Valentine ever!");
-    });
+  yesButton.addEventListener("click", () => {
+    alert("YAY 💖 Best Valentine ever!");
+  });
 
-    function moveButton() {
-      // First interaction: freeze where it is, then escape layout
-      if (!escaped) {
-        const rect = noButton.getBoundingClientRect();
-        noButton.style.position = "fixed";
-        noButton.style.left = rect.left + "px";
-        noButton.style.top = rect.top + "px";
-        escaped = true;
-      }
-
-      const padding = 20;
-      const maxX = window.innerWidth - noButton.offsetWidth - padding;
-      const maxY = window.innerHeight - noButton.offsetHeight - padding;
-
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
-
-      noButton.style.left = x + "px";
-      noButton.style.top = y + "px";
+  function moveButton() {
+    if (!escaped) {
+      const rect = noButton.getBoundingClientRect();
+      noButton.style.position = "fixed";
+      noButton.style.left = rect.left + "px";
+      noButton.style.top = rect.top + "px";
+      escaped = true;
     }
 
-    // Desktop
-    noButton.addEventListener("mouseover", moveButton);
+    const padding = 20;
 
-    // Mobile
-    noButton.addEventListener("touchstart", (e) => {
+    const maxX = window.innerWidth - noButton.offsetWidth - padding;
+    const maxY = window.innerHeight - noButton.offsetHeight - padding;
+
+    const minX = padding;
+    const minY = padding;
+
+    const x = minX + Math.random() * (maxX - minX);
+    const y = minY + Math.random() * (maxY - minY);
+
+    noButton.style.left = x + "px";
+    noButton.style.top = y + "px";
+  }
+
+  noButton.addEventListener("mouseover", moveButton);
+  noButton.addEventListener(
+    "touchstart",
+    (e) => {
       e.preventDefault();
       moveButton();
-    }, { passive: false });
-  </script>
+    },
+    { passive: false }
+  );
+</script>
 
 </body>
 </html>
