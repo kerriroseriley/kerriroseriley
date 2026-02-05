@@ -49,6 +49,13 @@
       background-color: #555;
       color: white;
     }
+
+    /* Message area */
+    #result {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 28px;
+    }
   </style>
 </head>
 <body>
@@ -56,27 +63,26 @@
   <h1>Will You Be My Valentine? ❤️</h1>
 
   <div class="buttons">
-    <button id="yes" type="button">
-      Yes
-    </button>
-
-    <button id="no" type="button">
-      No
-    </button>
+    <button id="yes" type="button">Yes</button>
+    <button id="no" type="button">No</button>
   </div>
+
+  <!-- ✅ This was missing -->
+  <div id="result"></div>
 
   <script>
     const yesButton = document.getElementById("yes");
     const noButton = document.getElementById("no");
+    const result = document.getElementById("result");
 
     let escaped = false;
 
     yesButton.addEventListener("click", () => {
-  document.getElementById("result").innerHTML = `
-    <h2>💘 Best Valentine Ever! 💘</h2>
-    <img src="images/valentine.jpg" alt="Valentine" width="400">
-  `;
-});
+      result.innerHTML = `<h2>💘 Best Valentine Ever! 💘</h2>`;
+      // Optional: disable buttons after "Yes"
+      // yesButton.disabled = true;
+      // noButton.disabled = true;
+    });
 
     function moveButton() {
       // First interaction: freeze where it is, then escape layout
@@ -103,10 +109,14 @@
     noButton.addEventListener("mouseover", moveButton);
 
     // Mobile
-    noButton.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      moveButton();
-    }, { passive: false });
+    noButton.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        moveButton();
+      },
+      { passive: false }
+    );
   </script>
 
 </body>
