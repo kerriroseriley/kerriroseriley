@@ -70,10 +70,13 @@
     const noButton = document.getElementById("no");
 
     let escaped = false;
-
+# not sure if right
     yesButton.addEventListener("click", () => {
-      alert("Best Valentine Ever!" );
-    });
+  document.getElementById("result").innerHTML = `
+    <h2>💘 Best Valentine Ever! 💘</h2>
+    <img src="images/valentine.jpg" alt="Valentine" width="400">
+  `;
+});
 
     function moveButton() {
       // First interaction: freeze where it is, then escape layout
