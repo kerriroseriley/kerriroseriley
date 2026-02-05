@@ -42,12 +42,13 @@
     #yes {
       background-color: #ff4d6d;
       color: white;
+      z-index: 2;
     }
 
-    /* IMPORTANT: No positioning here so it starts next to Yes */
     #no {
       background-color: #555;
       color: white;
+      z-index: 2;
     }
   </style>
 </head>
@@ -55,60 +56,77 @@
 
   <h1>Will You Be My Valentine? ❤️</h1>
 
-  <div class="buttons">
-    <button id="yes" type="button">
-      Yes
-    </button>
-
-    <button id="no" type="button">
-      No
-    </button>
+  <div class="buttons" id="buttonsRow">
+    <button id="yes" type="button">Yes</button>
+    <button id="no" type="button">No</button>
   </div>
 
   <script>
-  const yesButton = document.getElementById("yes");
-  const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
 
-  let escaped = false;
+    let escaped = false;
 
-  yesButton.addEventListener("click", () => {
-    alert("YAY 💖 Best Valentine ever!");
-  });
+    yesButton.addEventListener("click", () => {
+      alert("YAY 💖 Best Valentine ever!");
+    });
 
-  function moveButton() {
-    if (!escaped) {
-      const rect = noButton.getBoundingClientRect();
-      noButton.style.position = "fixed";
-      noButton.style.left = rect.left + "px";
-      noButton.style.top = rect.top + "px";
-      escaped = true;
+    function moveNo() {
+      // On first hover: lock NO in place, then hide the original (but keep its space)
+      if (!escaped) {
+        const rect = noButton.getBoundingClientRect();
+
+        // Keep the "spot" in the flex layout so YES never shifts
+        noButton.style.visibility = "hidden"; // takes space, but invisible
+
+        // Create a moving clone that starts exactly where NO was
+        const clone = noButton.cloneNode(true);
+        clone.id = "noMoving";
+        clone.style.visibility = "visible";
+        clone.style.position = "fixed";
+        clone.style.left = rect.left + "px";
+        clone.style.top = rect.top + "px";
+        clone.style.zIndex = "9999";
+
+        document.body.appendChild(clone);
+
+        // Replace reference so future moves affect the clone
+        window.noMoving = clone;
+        escaped = true;
+
+        // Make the clone also run away when you hover it
+        clone.addEventListener("mouseover", moveNo);
+        clone.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          moveNo();
+        }, { passive: false });
+      }
+
+      const btn = window.noMoving || noButton; // after escaped, this is the clone
+
+      const padding = 20;
+      const maxX = window.innerWidth - btn.offsetWidth - padding;
+      const maxY = window.innerHeight - btn.offsetHeight - padding;
+
+      const minX = padding;
+      const minY = padding;
+
+      const x = minX + Math.random() * (maxX - minX);
+      const y = minY + Math.random() * (maxY - minY);
+
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
     }
 
-    const padding = 20;
+    // Hovering the original NO triggers the first escape
+    noButton.addEventListener("mouseover", moveNo);
 
-    const maxX = window.innerWidth - noButton.offsetWidth - padding;
-    const maxY = window.innerHeight - noButton.offsetHeight - padding;
-
-    const minX = padding;
-    const minY = padding;
-
-    const x = minX + Math.random() * (maxX - minX);
-    const y = minY + Math.random() * (maxY - minY);
-
-    noButton.style.left = x + "px";
-    noButton.style.top = y + "px";
-  }
-
-  noButton.addEventListener("mouseover", moveButton);
-  noButton.addEventListener(
-    "touchstart",
-    (e) => {
+    // Mobile support
+    noButton.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      moveButton();
-    },
-    { passive: false }
-  );
-</script>
+      moveNo();
+    }, { passive: false });
+  </script>
 
 </body>
 </html>
