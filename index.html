@@ -24,6 +24,15 @@
       font-size: 48px;
     }
 
+    /* Fixed-height wrapper so adding #result doesn't shift the buttons */
+    .buttons-wrapper {
+      height: 90px;               /* enough room for buttons */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
     .buttons {
       display: flex;
       gap: 20px;
@@ -42,32 +51,34 @@
     #yes {
       background-color: #ff4d6d;
       color: white;
+      z-index: 2;                 /* stay on top if needed */
     }
 
-    /* IMPORTANT: No positioning here so it starts next to Yes */
     #no {
       background-color: #555;
       color: white;
+      z-index: 2;
     }
 
-    /* Message area */
     #result {
       margin-top: 25px;
       text-align: center;
       font-size: 28px;
+      min-height: 40px;           /* keeps space reserved */
     }
   </style>
 </head>
-<body>
 
+<body>
   <h1>Will You Be My Valentine? ❤️</h1>
 
-  <div class="buttons">
-    <button id="yes" type="button">Yes</button>
-    <button id="no" type="button">No</button>
+  <div class="buttons-wrapper">
+    <div class="buttons">
+      <button id="yes" type="button">Yes</button>
+      <button id="no" type="button">No</button>
+    </div>
   </div>
 
-  <!-- ✅ This was missing -->
   <div id="result"></div>
 
   <script>
@@ -75,17 +86,20 @@
     const noButton = document.getElementById("no");
     const result = document.getElementById("result");
 
+    // Freeze YES button exactly where it starts
+    const yesRect = yesButton.getBoundingClientRect();
+    yesButton.style.position = "fixed";
+    yesButton.style.left = yesRect.left + "px";
+    yesButton.style.top = yesRect.top + "px";
+
     let escaped = false;
 
     yesButton.addEventListener("click", () => {
       result.innerHTML = `<h2>💘 Best Valentine Ever! 💘</h2>`;
-      // Optional: disable buttons after "Yes"
-      // yesButton.disabled = true;
-      // noButton.disabled = true;
     });
 
     function moveButton() {
-      // First interaction: freeze where it is, then escape layout
+      // First interaction: freeze NO where it is, then let it move freely
       if (!escaped) {
         const rect = noButton.getBoundingClientRect();
         noButton.style.position = "fixed";
@@ -118,6 +132,5 @@
       { passive: false }
     );
   </script>
-
 </body>
 </html>
