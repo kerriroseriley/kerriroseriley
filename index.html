@@ -27,14 +27,13 @@
     }
 
     h2 {
-      color:#ff4d6d
-      ont-family:'Pacifico', cursive;
-      font-family: times new roman, serif;
+      color: #ff4d6d;
+      font-family: "Times New Roman", serif;
     }
 
     p {
       font-size: 20px;
-      font-family:'Times New Roman', Times, serif
+      font-family: "Times New Roman", Times, serif;
     }
 
     button {
@@ -45,15 +44,29 @@
       cursor: pointer;
     }
 
+    /* Keep the YES button stable */
     #yes {
       background-color: #ff4d6d;
       color: white;
+      position: relative;
+      z-index: 10;
     }
 
+    /* Let NO roam anywhere on screen */
     #no {
       background-color: #555;
       color: white;
-      transition: transform 0.15s ease-out;
+      position: absolute;
+      transition: top 0.15s ease-out, left 0.15s ease-out;
+      z-index: 9;
+    }
+
+    /* Buttons start next to each other */
+    .buttons {
+      position: relative;
+      display: flex;
+      gap: 20px;
+      z-index: 2000;
     }
 
     /* Bottom buttons */
@@ -93,20 +106,20 @@
     }
 
     /* Photo album */
-   .photo-row {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: nowrap; /* force horizontal */
-}
+    .photo-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: nowrap; /* force horizontal */
+    }
 
-.photo-row img {
-  width: 180px;        /* slightly smaller for mobile */
-  height: 240px;
-  object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
+    .photo-row img {
+      width: 180px;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
 
     /* Mobile */
     @media (max-width: 700px) {
@@ -139,80 +152,4 @@
 
   <!-- Letter Modal -->
   <div class="modal" id="letterModal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Letter for Niko</h2>
-      <p>
-        <img src="cat.png" alt="Cat" style="width:250px;border-radius:12px;"> <br>
-  
-        I love you so much. You are my favorite boy in the whole wide web (www)! I am so happy you came into my life
-      </p> 
-    </div>
-  </div>
-
-  <!-- Album Modal -->
-  <div class="modal" id="albumModal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>Our Memories</h2>
-      <div class="photo-row">
-        <img src="zara.jpeg" alt="Memory 1">
-        <img src="fam.jpeg" alt="Memory 2">
-        <img src="awk.jpeg" alt="Memory 3">
-      </div>
-    </div>
-  </div>
-
-  <!-- Yes Image Modal -->
-  <div class="modal" id="imageModal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <p><strong>Love you Noko</strong></p>
-      <img src="IMG_7320.jpeg" alt="Niko and Me" style="width:250px;border-radius:12px;">
-    </div>
-  </div>
-
-  <script>
-    // Letter & Album
-    const letterBtn = document.getElementById("letterBtn");
-    const albumBtn = document.getElementById("albumBtn");
-    const letterModal = document.getElementById("letterModal");
-    const albumModal = document.getElementById("albumModal");
-
-    letterBtn.onclick = () => letterModal.style.display = "flex";
-    albumBtn.onclick = () => albumModal.style.display = "flex";
-
-    // Close buttons
-    document.querySelectorAll(".close").forEach(btn => {
-      btn.onclick = () => btn.closest(".modal").style.display = "none";
-    });
-
-    // Yes / No logic
-    const noButton = document.getElementById("no");
-    const yesButton = document.getElementById("yes");
-    const imageModal = document.getElementById("imageModal");
-
-    yesButton.onclick = () => imageModal.style.display = "flex";
-
-    function moveNo() {
-      const x = Math.random() * 400 - 200;
-      const y = Math.random() * 300 - 150;
-      noButton.style.transform = `translate(${x}px, ${y}px)`;
-    }
-
-    noButton.addEventListener("mouseover", moveNo);
-    noButton.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      moveNo();
-    }, { passive: false });
-
-    // Click outside to close
-    window.onclick = (e) => {
-      if (e.target.classList.contains("modal")) {
-        e.target.style.display = "none";
-      }
-    };
-  </script>
-
-</body>
-</html>
+    <div class="modal-con
