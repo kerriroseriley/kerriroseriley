@@ -42,13 +42,11 @@
     #yes {
       background-color: #ff4d6d;
       color: white;
-      z-index: 10;
     }
 
     #no {
       background-color: #555;
       color: white;
-      z-index: 10;
     }
   </style>
 </head>
@@ -65,51 +63,51 @@
     const yesButton = document.getElementById("yes");
     const noButton = document.getElementById("no");
 
-    // 🔒 Freeze YES forever
-    const yesRect = yesButton.getBoundingClientRect();
-    yesButton.style.position = "fixed";
-    yesButton.style.left = yesRect.left + "px";
-    yesButton.style.top = yesRect.top + "px";
-
-    let escaped = false;
+    let noClone = null;
 
     yesButton.addEventListener("click", () => {
       alert("YAY 💖 Best Valentine ever!");
     });
 
-    function moveButton() {
-      // First hover/touch: freeze NO, then let it escape
-      if (!escaped) {
-        const rect = noButton.getBoundingClientRect();
-        noButton.style.position = "fixed";
-        noButton.style.left = rect.left + "px";
-        noButton.style.top = rect.top + "px";
-        escaped = true;
-      }
+    function ensureNoClone() {
+      if (noClone) return;
+
+      // Keep original NO in the layout so YES never shifts
+      const rect = noButton.getBoundingClientRect();
+      noButton.style.visibility = "hidden"; // still takes space in flex row
+
+      // Create a moving clone that is fixed-position
+      noClone = noButton.cloneNode(true);
+      noClone.id = "no-clone";
+      noClone.style.position = "fixed";
+      noClone.style.left = rect.left + "px";
+      noClone.style.top = rect.top + "px";
+      noClone.style.zIndex = "9999";
+      document.body.appendChild(noClone);
+    }
+
+    function moveNo() {
+      ensureNoClone();
 
       const padding = 20;
-      const maxX = window.innerWidth - noButton.offsetWidth - padding;
-      const maxY = window.innerHeight - noButton.offsetHeight - padding;
+      const maxX = window.innerWidth - noClone.offsetWidth - padding;
+      const maxY = window.innerHeight - noClone.offsetHeight - padding;
 
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
 
-      noButton.style.left = x + "px";
-      noButton.style.top = y + "px";
+      noClone.style.left = x + "px";
+      noClone.style.top = y + "px";
     }
 
-    // Desktop
-    noButton.addEventListener("mouseover", moveButton);
+    // Desktop: hovering where NO *would be* triggers movement
+    noButton.addEventListener("mouseover", moveNo);
 
-    // Mobile
-    noButton.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        moveButton();
-      },
-      { passive: false }
-    );
+    // Mobile: tapping where NO *would be* triggers movement
+    noButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNo();
+    }, { passive: false });
   </script>
 
 </body>
