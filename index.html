@@ -44,32 +44,30 @@
       cursor: pointer;
     }
 
-    /* Keep the YES button stable */
     #yes {
       background-color: #ff4d6d;
       color: white;
-      position: relative;
-      z-index: 10;
     }
 
-    /* Let NO roam anywhere on screen */
+    /* NO starts normal */
     #no {
       background-color: #555;
       color: white;
-      position: absolute;
       transition: top 0.15s ease-out, left 0.15s ease-out;
-      z-index: 9;
     }
 
-    /* Buttons start next to each other */
+    /* NO after it escapes */
+    #no.free {
+      position: fixed;
+      z-index: 2500;
+    }
+
     .buttons {
-      position: relative;
       display: flex;
       gap: 20px;
       z-index: 2000;
     }
 
-    /* Bottom buttons */
     .bottom-buttons {
       position: fixed;
       bottom: 20px;
@@ -80,7 +78,6 @@
       z-index: 2000;
     }
 
-    /* Modals */
     .modal {
       display: none;
       position: fixed;
@@ -105,12 +102,10 @@
       float: right;
     }
 
-    /* Photo album */
     .photo-row {
       display: flex;
       gap: 14px;
       justify-content: center;
-      flex-wrap: nowrap; /* force horizontal */
     }
 
     .photo-row img {
@@ -121,7 +116,6 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }
 
-    /* Mobile */
     @media (max-width: 700px) {
       .photo-row {
         flex-direction: column;
@@ -144,7 +138,6 @@
     <button id="no">No</button>
   </div>
 
-  <!-- Bottom Buttons -->
   <div class="bottom-buttons">
     <button id="letterBtn">💌 Read Letter</button>
     <button id="albumBtn">📸 Photo Album</button>
@@ -152,4 +145,84 @@
 
   <!-- Letter Modal -->
   <div class="modal" id="letterModal">
-    <div class="modal-con
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Letter for Niko</h2>
+      <p>
+        <img src="cat.png" alt="Cat" style="width:250px;border-radius:12px;"><br>
+        I love you so much. You are my favorite boy in the whole wide web (www)!
+      </p>
+    </div>
+  </div>
+
+  <!-- Album Modal -->
+  <div class="modal" id="albumModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Our Memories</h2>
+      <div class="photo-row">
+        <img src="zara.jpeg">
+        <img src="fam.jpeg">
+        <img src="awk.jpeg">
+      </div>
+    </div>
+  </div>
+
+  <!-- Yes Modal -->
+  <div class="modal" id="imageModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p><strong>Love you Noko</strong></p>
+      <img src="IMG_7320.jpeg" style="width:250px;border-radius:12px;">
+    </div>
+  </div>
+
+  <script>
+    const letterBtn = document.getElementById("letterBtn");
+    const albumBtn = document.getElementById("albumBtn");
+    const letterModal = document.getElementById("letterModal");
+    const albumModal = document.getElementById("albumModal");
+
+    letterBtn.onclick = () => letterModal.style.display = "flex";
+    albumBtn.onclick = () => albumModal.style.display = "flex";
+
+    document.querySelectorAll(".close").forEach(btn => {
+      btn.onclick = () => btn.closest(".modal").style.display = "none";
+    });
+
+    const yesButton = document.getElementById("yes");
+    const noButton = document.getElementById("no");
+    const imageModal = document.getElementById("imageModal");
+
+    yesButton.onclick = () => imageModal.style.display = "flex";
+
+    function moveNo() {
+      if (!noButton.classList.contains("free")) {
+        const r = noButton.getBoundingClientRect();
+        noButton.classList.add("free");
+        noButton.style.left = `${r.left}px`;
+        noButton.style.top = `${r.top}px`;
+      }
+
+      const maxX = window.innerWidth - noButton.offsetWidth;
+      const maxY = window.innerHeight - noButton.offsetHeight;
+
+      noButton.style.left = `${Math.random() * maxX}px`;
+      noButton.style.top = `${Math.random() * maxY}px`;
+    }
+
+    noButton.addEventListener("mouseenter", moveNo);
+    noButton.addEventListener("touchstart", e => {
+      e.preventDefault();
+      moveNo();
+    }, { passive: false });
+
+    window.onclick = e => {
+      if (e.target.classList.contains("modal")) {
+        e.target.style.display = "none";
+      }
+    };
+  </script>
+
+</body>
+</html>
