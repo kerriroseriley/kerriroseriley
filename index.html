@@ -14,8 +14,32 @@
       justify-content: center;
       align-items: center;
       font-family: Arial, sans-serif;
-      background: pink;
+
+      /* 🌸 FUN BACKGROUND */
+      background: linear-gradient(135deg, #ffd6e8, #ffb3c6, #ff8fab);
       overflow: hidden;
+    }
+
+    /* FLOATING HEARTS */
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 24px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(0.8);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-120vh) scale(1.4);
+        opacity: 0;
+      }
     }
 
     h1 {
@@ -24,6 +48,7 @@
       font-size: 60px;
       font-family: 'Times New Roman', cursive;
       color: #ff4d6d;
+      z-index: 2000;
     }
 
     h2 {
@@ -49,14 +74,12 @@
       color: white;
     }
 
-    /* NO starts normal */
     #no {
       background-color: #555;
       color: white;
       transition: top 0.15s ease-out, left 0.15s ease-out;
     }
 
-    /* NO after it escapes */
     #no.free {
       position: fixed;
       z-index: 2500;
@@ -178,6 +201,18 @@
   </div>
 
   <script>
+    /* FLOATING HEARTS CREATOR */
+    const heartCount = 25;
+    for (let i = 0; i < heartCount; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDelay = Math.random() * 6 + "s";
+      heart.style.fontSize = 16 + Math.random() * 28 + "px";
+      document.body.appendChild(heart);
+    }
+
     const letterBtn = document.getElementById("letterBtn");
     const albumBtn = document.getElementById("albumBtn");
     const letterModal = document.getElementById("letterModal");
@@ -226,3 +261,4 @@
 
 </body>
 </html>
+
