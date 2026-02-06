@@ -126,16 +126,14 @@
         height: 260px;
       }
     }
+    @keyframes floatHearts {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+  }
 
-    .monaco-editor {
-  border: 12px solid transparent;
-  border-image: repeating-linear-gradient(
-    45deg,
-    red 0 10px,
-    pink 10px 20px
-  ) 20;
-}
-
+  .monaco-editor {
+    animation: floatHearts 2s infinite alternate;
+  }
   </style>
 </head>
 
